@@ -36,7 +36,24 @@ Checks if rosdep database has been initialized
 import os
 
 def get_user_home_directory():
+    """Returns cross-platform user home directory """
     return os.path.expanduser("~")
 
-def is_rosdep_database_initialized():    
-    return os.path.exists((os.path.join(get_user_home_directory(), '.ros', 'rosdep', 'sources.cache', 'index')))
+def rosdep_database_initialized_check(ctx):
+    """Makes sure rosdep database is initialized"""
+    if not os.path.exists((os.path.join(get_user_home_directory(), '.ros', 'rosdep', 'sources.cache', 'index'))):
+        return "Please initialize rosdep database with sudo rosdep init."
+
+warnings = []
+
+errors = [(rosdep_database_initialized_check, 
+           "ROS Dep database not initialized:"),
+         ]
+    
+def wtf_check(ctx):
+    """Check implementation function for roswtf"""
+    from roswtf.rules import warning_rule, error_rule
+    for r in warnings:
+        warning_rule(r, r[0](ctx), ctx)
+    for r in errors:
+        error_rule(r, r[0](ctx), ctx)
