@@ -35,9 +35,11 @@ Checks if rosdep database has been initialized
 """
 import os
 
+
 def get_user_home_directory():
     """Returns cross-platform user home directory """
     return os.path.expanduser("~")
+
 
 def rosdep_database_initialized_check(ctx):
     """Makes sure rosdep database is initialized"""
@@ -46,10 +48,11 @@ def rosdep_database_initialized_check(ctx):
 
 warnings = []
 
-errors = [(rosdep_database_initialized_check, 
+errors = [(rosdep_database_initialized_check,
            "ROS Dep database not initialized:"),
          ]
-    
+
+
 def wtf_check(ctx):
     """Check implementation function for roswtf"""
     from roswtf.rules import warning_rule, error_rule
